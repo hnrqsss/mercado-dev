@@ -25,7 +25,10 @@ class App extends Component {
                 <h3>Categorias</h3>
 
                 <div className="row">
-                    <Categories/>
+                    <Categories category ={{name: 'Bicicleta', icon: 'fa-car'}} />
+                    <Categories category ={{name: 'Bicicleta', icon: 'fa-car'}} />
+                    <Categories category ={{name: 'Bicicleta', icon: 'fa-car'}} />
+                    <Categories category ={{name: 'Bicicleta', icon: 'fa-car'}} />
                 </div>
 
             </div>
