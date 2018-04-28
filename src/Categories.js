@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Categories = ({category}) => {
+const Categories = ({categoria}) => {
     return (
         <a to={`/anuncios/categoria/`} className="btn btn-secondary h-100 m-2 col-sm">
-            <i className={`fa ${category.icon} fa-4x`} aria-hidden="true"></i><br />
-            {category.name}
+            <i className={`fa ${categoria.icon} fa-4x`} aria-hidden="true"></i><br />
+            {categoria.categoria}
         </a>
     )
 }
