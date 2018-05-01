@@ -8,17 +8,12 @@ import base from './base'
 
 class Home extends Component{
 
-    constructor(propos){
-        super(propos)
+    constructor(props){
+        super(props)
 
         this.state = {
-            categorias : [],
             anuncios: []
         }
-        base.bindToState('categorias',{
-            context: this,
-            state: 'categorias'
-        })
 
         base.bindToState('anuncios',{
             context: this,
@@ -40,15 +35,16 @@ class Home extends Component{
                     <h3>Últimos anúncios</h3>
 
                     <div className="row">
-                        {this.state.anuncios.map( (ad,indice) => {
-                            return <AdHome anuncio={ad} key={indice} />
+                        {Object.keys(this.state.anuncios).map( key => {
+                            const ad = this.state.anuncios[key]
+                            return <AdHome anuncio={ad} key={key} />
                         })}
                     </div>
 
                     <h3>Categorias</h3>
 
                     <div className="row">
-                        {this.state.categorias.map( (cat,indice) => {
+                        {this.props.categorias.map( (cat,indice) => {
                             return [
                                 <Categories categoria={cat} key={indice} />,
                                 ++index%4 === 0 && <div className="w-100" key={'c'+indice}></div>

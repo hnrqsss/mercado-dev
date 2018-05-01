@@ -12,27 +12,37 @@ class NewAd extends Component{
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     
-    handleSubmit(event){
-        const newAd = {
-            nome : this.nome.value,
-            descricao: this.descricao.value,
-            preco: this.preco.value,
-            telefone: this.telefone.value,
-            vendedor: this.vendedor.value,
-            foto: 'http://placehold.it/200x140'
-        }
-        
-        base.push('anuncios',{
-            data: newAd
-        }, (err) => {
-            if(err){
-    
-            }else{
-    
+    handleSubmit(e){
+
+        const file = this.foto.files[0]
+        const { name, size } = file
+        const ref = storage.ref(name)
+
+        ref.put(file).then( img => {
+            
+            const newAd = {
+                nome : this.nome.value,
+                categoria: this.categoria.value,
+                descricao: this.descricao.value,
+                preco: this.preco.value,
+                telefone: this.telefone.value,
+                vendedor: this.vendedor.value,
+                foto: img.metadata.downloadURLs[0]
             }
+
+            base.push('anuncios',{
+                data: newAd},
+            (err) => {
+                if(err){
+                    console.log(err)
+                }else{
+
+                }
+            })
+
         })
 
-        event.preventDefautl()
+        //e.preventDefault()
     }
 
     render(){
@@ -46,9 +56,24 @@ class NewAd extends Component{
                 <form onSubmit={this.handleSubmit} >
 
                     <div className="form-group">
-                        <label htmlFor='nome'>Nome</label>
+                        <label htmlFor='foto'>Foto</label>
+                        <input type='file' className='form-control' id='foto' placeholder='foto' ref={ (ref) => this.foto = ref } />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor='foto'>Nome</label>
                         <input type='text' className='form-control' id='nome' placeholder='nome' ref={ (ref) => this.nome = ref } />
                     </div>
+
+                    <div className="form-group">
+                        <label htmlFor='categoria'>Categorias: </label>
+                        <select ref={(ref) => this.categoria = ref} id='categoria'>
+                           {this.props.categorias.map((cat,key) => 
+                                <option value={cat.url} key={key} >{cat.categoria}</option>
+                           )} 
+                        </select>
+                    </div>
+
 
                     <div className="form-group">
                         <label htmlFor='descricao'>Descrição</label>

@@ -8,17 +8,30 @@ import NewAd from './NewAd'
 
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 
-class App extends Component {    
+class App extends Component {   
+    constructor(props) {
+        super(props)
+        
+        this.state = {
+            categorias : []
+        }
+
+        base.bindToState('categorias',{
+            context: this,
+            state: 'categorias'
+        })
+    }
   
     render() {
 
         let index = 0
-        
+        {JSON.stringify(this.state.categorias)}
     return (
         <Router>
+           
             <div className="App">
-                <Route path='/' exact component={Home} />
-                <Route path='/novo-anuncio' exact component={NewAd} />
+                <Route path='/' exact render={() => <Home categorias={this.state.categorias} /> } />
+                <Route path='/novo-anuncio' exact render={ () => <NewAd categorias={this.state.categorias} /> } />
                 <Footer/>
             </div>
         </Router>
