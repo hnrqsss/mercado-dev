@@ -2,20 +2,24 @@ import React, { Component } from 'react'
 
 import HeaderAd from './HeaderAd'
 import base, { storage } from './base'
+import { jsonEval } from '@firebase/util';
+import { Redirect } from 'react-router-dom'
 
 
 class NewAd extends Component{
 
     constructor(props){
         super(props)
-
+        this.state = {
+            sucess : false
+        }
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     
     handleSubmit(e){
 
         const file = this.foto.files[0]
-        const { name, size } = file
+        const { name } = file
         const ref = storage.ref(name)
 
         ref.put(file).then( img => {
@@ -31,28 +35,27 @@ class NewAd extends Component{
             }
 
             base.push('anuncios',{
-                data: newAd},
-            (err) => {
-                if(err){
-                    console.log(err)
-                }else{
-
-                }
-            })
-
+                data: newAd}).then(
+                    () => {
+                        this.setState({sucess: true})
+                    }    
+                )
         })
 
-        //e.preventDefault()
+        e.preventDefault()
     }
 
     render(){
-    
+
+        if(this.state.sucess){
+            return <Redirect to='/' />
+        }
         return(
-
+            
             <div className="container" style={{paddingTop:'120px'}} >
-                <HeaderAd />
+               <HeaderAd />
                 <h1>Novo Anúncio</h1>
-
+                <p>Teste: {this.state.sucess}</p>
                 <form onSubmit={this.handleSubmit} >
 
                     <div className="form-group">
@@ -61,15 +64,15 @@ class NewAd extends Component{
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor='foto'>Nome</label>
+                        <label htmlFor='nome'>Nome</label>
                         <input type='text' className='form-control' id='nome' placeholder='nome' ref={ (ref) => this.nome = ref } />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor='categoria'>Categorias: </label>
                         <select ref={(ref) => this.categoria = ref} id='categoria'>
-                           {this.props.categorias.map((cat,key) => 
-                                <option value={cat.url} key={key} >{cat.categoria}</option>
+                           {this.props.categorias.map(cat => 
+                                <option value={cat.url} key={cat.url} >{cat.categoria}</option>
                            )} 
                         </select>
                     </div>

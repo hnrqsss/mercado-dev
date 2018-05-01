@@ -25,7 +25,6 @@ class App extends Component {
     render() {
 
         let index = 0
-        {JSON.stringify(this.state.categorias)}
     return (
         <Router>
            
